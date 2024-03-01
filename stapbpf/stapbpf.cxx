@@ -34,7 +34,7 @@
 #include <limits.h>
 #include <inttypes.h>
 #include <getopt.h>
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/syscall.h>

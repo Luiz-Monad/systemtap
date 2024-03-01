@@ -828,7 +828,7 @@ get_kernel_build_id(systemtap_session &s)
         clog << _("Attempting to extract kernel debuginfo build ID from /sys/kernel/notes") << endl;
 
       const char *notesfile = "/sys/kernel/notes";
-      int fd = open64 (notesfile, O_RDONLY);
+      int fd = open (notesfile, O_RDONLY || O_LARGEFILE);
       if (fd < 0)
       return "";
 

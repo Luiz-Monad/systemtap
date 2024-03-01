@@ -1553,7 +1553,7 @@ systemtap_session::parse_cmdline (int argc, char * const argv [])
 	  } else {
 	      char *spath;
 	      assert(optarg);
-	      spath = canonicalize_file_name (optarg);
+	      spath = realpath (optarg, NULL);
 	      if (spath == NULL) {
 		  cerr << _F("ERROR: %s is an invalid directory for --sysroot", optarg) << endl;
 		  return 1;

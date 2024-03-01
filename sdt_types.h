@@ -6,6 +6,9 @@
 #ifndef _SDT_TYPES_H
 #define _SDT_TYPES_H    1
 
+#define __uint32_t uint32_t
+#define __uint64_t uint64_t
+
 #define UPROBE1_TYPE 0x31425250 /* "PRB1" (little-endian) */
 #define UPROBE2_TYPE 0x32425055 /* "UPB2" */
 #define UPROBE3_TYPE 0x33425055 /* "UPB3" */

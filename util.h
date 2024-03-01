@@ -29,6 +29,8 @@ extern "C" {
 #include <poll.h>
 }
 
+#include <sys/types.h>
+
 // Sanity check C++11 support.  We're only requiring GCC 4.4's level of
 // functionality, so trust either __cplusplus or the GNUC macros.
 #if !(__cplusplus >= 201103L || \
@@ -424,6 +426,6 @@ void rtrim(std::string &s);
 void trim(std::string &s);
 
 bool get_distro_info(std::vector<std::string> &info);
-#endif // UTIL_H
 
+#endif // UTIL_H
 /* vim: set sw=2 ts=8 cino=>4,n-2,{2,^-2,t0,(0,u0,w1,M1 : */

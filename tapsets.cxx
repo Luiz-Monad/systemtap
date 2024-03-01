@@ -63,6 +63,9 @@ extern "C" {
 
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
+
+// GNU fnmatch extension FNM_EXTMATCH
+int efnmatch (const char *pattern, const char *string);
 }
 
 using namespace std;
@@ -10668,7 +10671,7 @@ kprobe_builder::build(systemtap_session & sess,
                    it != sess.kernel_functions.cend(); it++)
                 {
                   // fnmatch returns zero for matching.
-                  if (fnmatch(val.c_str(), it->to_string().c_str(), FNM_EXTMATCH) == 0)
+                  if (efnmatch(val.c_str(), it->to_string().c_str()) == 0)
                     matches.push_back(*it);
                 }
             }

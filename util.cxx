@@ -1791,14 +1791,26 @@ not_isspace(unsigned char c)
 void
 ltrim(std::string &s)
 {
-  s.erase(s.begin(), std::find_if(s.begin(), s.end(), not_isspace));
+  s.erase(
+	s.begin(),
+	std::find_if(s.begin(), s.end(),
+		[](unsigned char c) {
+			return !std::isspace(c);}
+		)
+	);
 }
 
 // trim from end (in place)
 void
 rtrim(std::string &s)
 {
-  s.erase(std::find_if(s.rbegin(), s.rend(), not_isspace).base(), s.end());
+  s.erase(
+	std::find_if(s.rbegin(), s.rend(),
+		[](unsigned char c) {
+			return !std::isspace(c);}
+		).base(), 
+	s.end()
+	);
 }
 
 // trim from both ends (in place)

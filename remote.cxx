@@ -16,6 +16,7 @@ extern "C" {
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <libgen.h>
 }
 
 #include <cstdio>
@@ -472,7 +473,10 @@ class stapsh : public remote {
 
         if (!s->uprobes_path.empty())
           {
-            string remoteuprobes = basename(s->uprobes_path.c_str());
+            char * cstr = new char[s->uprobes_path.length() + 1];
+            std::strcpy(cstr, s->uprobes_path.c_str());
+            string remoteuprobes = basename(cstr);
+            delete[] cstr;
             if ((rc = send_file(s->uprobes_path, remoteuprobes)))
               return rc;
 

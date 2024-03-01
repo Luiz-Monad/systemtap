@@ -58,9 +58,10 @@ extern "C" {
 #include <time.h>
 #include <unistd.h>
 #include <wordexp.h>
-#include <ftw.h>
 #include <fcntl.h>
 }
+
+#include "nftw.h"
 
 using namespace std;
 
