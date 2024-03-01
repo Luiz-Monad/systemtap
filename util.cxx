@@ -257,12 +257,20 @@ split_path (string &path, string &directory, string &entry)
 {
   char *dirc, *basec, *bname, *dname;
 
-  dirc = strdupa (path.c_str());
-  basec = strdupa (path.c_str());
+  dirc = new char[path.length() + 1];
+  std::strcpy(dirc, path.c_str());
+  
+  basec = new char[path.length() + 1];
+  std::strcpy(basec, path.c_str());
+
   dname = dirname (dirc);
   bname = basename (basec);
+
   directory = dname;
   entry = bname;
+
+  delete[] dirc;
+  delete[] basec;
 }
 
 

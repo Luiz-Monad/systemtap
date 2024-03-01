@@ -34,7 +34,9 @@ extern "C" {
 #include <limits.h>
 #include <sys/utsname.h>
 #include <unistd.h>
+#ifdef HAVE_LIBDEBUGINFOD
 #include <elfutils/debuginfod.h>
+#endif
 }
 
 // XXX: also consider adding $HOME/.debug/ for perf build-id-cache
@@ -353,6 +355,7 @@ void debuginfo_path_insert_sysroot(string sysroot)
   debuginfo_usr_path = path_insert_sysroot(sysroot, debuginfo_usr_path);
 }
 
+#ifdef HAVE_LIBDEBUGINFOD
 static
 int
 debufginfod_progress (debuginfod_client *c,
@@ -407,7 +410,13 @@ setup_debuginfod_progress(Dwfl *dwfl)
   if (c != NULL)
     debuginfod_set_progressfn (c, debufginfod_progress);
 }
-
+#else
+void
+setup_debuginfod_progress(Dwfl *dwfl)
+{
+  (void)dwfl; // unused
+}
+#endif
 
 static Dwfl *
 setup_dwfl_kernel (unsigned *modules_found, systemtap_session &s)
