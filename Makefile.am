@@ -52,7 +52,8 @@ stap_SOURCES = main.cxx session.cxx \
 	setupdwfl.cxx remote.cxx privilege.cxx cmdline.cxx \
 	tapset-dynprobe.cxx tapset-method.cxx translator-output.cxx \
         stapregex.cxx stapregex-tree.cxx stapregex-parse.cxx \
-	stapregex-dfa.cxx stringtable.cxx tapset-python.cxx
+	stapregex-dfa.cxx stringtable.cxx tapset-python.cxx \
+	efnmatch.c nftw.c
 noinst_HEADERS = sdt_types.h
 stap_LDADD = @stap_LIBS@ @sqlite3_LIBS@ @LIBINTL@ -lpthread @debuginfod_LIBS@
 stap_DEPENDENCIES =

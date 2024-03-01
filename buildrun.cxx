@@ -29,6 +29,7 @@ extern "C" {
 #include <string.h>
 #include <errno.h>
 #include <sys/resource.h>
+#include <libgen.h>
 }
 
 // A bit of obfuscation for Gentoo's sake.
@@ -910,8 +911,12 @@ make_kernel_run_command (systemtap_session& s, const string& remotedir,
         {
           if (remotedir.empty())
             opt_u.append(s.uprobes_path);
-          else
-            opt_u.append(remotedir + "/" + basename(s.uprobes_path.c_str()));
+          else {
+            char * cstr = new char[s.uprobes_path.length() + 1];
+            std::strcpy(cstr, s.uprobes_path.c_str());
+            opt_u.append(remotedir + "/" + basename(cstr));
+            delete[] cstr;
+          }
         }
       cmd.push_back(opt_u);
     }

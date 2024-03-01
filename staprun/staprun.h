@@ -30,7 +30,6 @@
 #include <errno.h>
 #include <linux/fd.h>
 #include <sys/mman.h>
-#include <sys/poll.h>
 #include <pthread.h>
 #include <sys/socket.h>
 #include <linux/limits.h>
@@ -42,6 +41,8 @@
 /* Include config.h to pick up dependency for --prefix usage. */
 #include "../config.h"
 #include "../privilege.h"
+
+#define __off_t off_t
 
 #if ENABLE_NLS
 #include <libintl.h>
@@ -304,6 +305,8 @@ extern unsigned n_subbufs;
  */
 #if (__GLIBC__ < 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ < 4))
 #define NEED_PPOLL
+
+#include <poll.h>
 
 extern int ppoll(struct pollfd *fds, nfds_t nfds,
 		 const struct timespec *timeout, const sigset_t *sigmask);
