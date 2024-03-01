@@ -213,9 +213,10 @@ PROGRAMS = $(bin_PROGRAMS) $(pkglibexec_PROGRAMS)
 @BUILD_TRANSLATOR_TRUE@	stap-stapregex-dfa.$(OBJEXT) \
 @BUILD_TRANSLATOR_TRUE@	stap-stringtable.$(OBJEXT) \
 @BUILD_TRANSLATOR_TRUE@	stap-tapset-python.$(OBJEXT) \
-@BUILD_TRANSLATOR_TRUE@	$(am__objects_1) $(am__objects_2) \
-@BUILD_TRANSLATOR_TRUE@	$(am__objects_3) $(am__objects_4) \
-@BUILD_TRANSLATOR_TRUE@	$(am__objects_5)
+@BUILD_TRANSLATOR_TRUE@	stap-efnmatch.$(OBJEXT) \
+@BUILD_TRANSLATOR_TRUE@	stap-nftw.$(OBJEXT) $(am__objects_1) \
+@BUILD_TRANSLATOR_TRUE@	$(am__objects_2) $(am__objects_3) \
+@BUILD_TRANSLATOR_TRUE@	$(am__objects_4) $(am__objects_5)
 stap_OBJECTS = $(am_stap_OBJECTS)
 am__DEPENDENCIES_1 =
 @BUILD_TRANSLATOR_TRUE@@HAVE_AVAHI_TRUE@am__DEPENDENCIES_2 =  \
@@ -330,9 +331,10 @@ am__depfiles_remade = ./$(DEPDIR)/stap-bpf-base.Po \
 	./$(DEPDIR)/stap-coveragedb.Po ./$(DEPDIR)/stap-csclient.Po \
 	./$(DEPDIR)/stap-cscommon.Po \
 	./$(DEPDIR)/stap-dwarf_wrappers.Po ./$(DEPDIR)/stap-dwflpp.Po \
-	./$(DEPDIR)/stap-elaborate.Po ./$(DEPDIR)/stap-hash.Po \
-	./$(DEPDIR)/stap-interactive.Po ./$(DEPDIR)/stap-loc2stap.Po \
-	./$(DEPDIR)/stap-main.Po ./$(DEPDIR)/stap-mdfour.Po \
+	./$(DEPDIR)/stap-efnmatch.Po ./$(DEPDIR)/stap-elaborate.Po \
+	./$(DEPDIR)/stap-hash.Po ./$(DEPDIR)/stap-interactive.Po \
+	./$(DEPDIR)/stap-loc2stap.Po ./$(DEPDIR)/stap-main.Po \
+	./$(DEPDIR)/stap-mdfour.Po ./$(DEPDIR)/stap-nftw.Po \
 	./$(DEPDIR)/stap-nss-server-info.Po \
 	./$(DEPDIR)/stap-nsscommon.Po ./$(DEPDIR)/stap-parse.Po \
 	./$(DEPDIR)/stap-privilege.Po ./$(DEPDIR)/stap-remote.Po \
@@ -465,7 +467,6 @@ CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
@@ -632,6 +633,7 @@ py3execdir = @py3execdir@
 pyexecdir = @pyexecdir@
 python3dir = @python3dir@
 pythondir = @pythondir@
+runstatedir = @runstatedir@
 sbindir = @sbindir@
 selinux_CFLAGS = @selinux_CFLAGS@
 selinux_LIBS = @selinux_LIBS@
@@ -690,9 +692,10 @@ oldinclude_HEADERS = includes/sys/sdt.h includes/sys/sdt-config.h
 @BUILD_TRANSLATOR_TRUE@	translator-output.cxx stapregex.cxx \
 @BUILD_TRANSLATOR_TRUE@	stapregex-tree.cxx stapregex-parse.cxx \
 @BUILD_TRANSLATOR_TRUE@	stapregex-dfa.cxx stringtable.cxx \
-@BUILD_TRANSLATOR_TRUE@	tapset-python.cxx $(am__append_7) \
-@BUILD_TRANSLATOR_TRUE@	$(am__append_9) $(am__append_14) \
-@BUILD_TRANSLATOR_TRUE@	$(am__append_15) $(am__append_21)
+@BUILD_TRANSLATOR_TRUE@	tapset-python.cxx efnmatch.c nftw.c \
+@BUILD_TRANSLATOR_TRUE@	$(am__append_7) $(am__append_9) \
+@BUILD_TRANSLATOR_TRUE@	$(am__append_14) $(am__append_15) \
+@BUILD_TRANSLATOR_TRUE@	$(am__append_21)
 @BUILD_TRANSLATOR_TRUE@noinst_HEADERS = sdt_types.h
 @BUILD_TRANSLATOR_TRUE@stap_LDADD = @stap_LIBS@ @sqlite3_LIBS@ \
 @BUILD_TRANSLATOR_TRUE@	@LIBINTL@ -lpthread @debuginfod_LIBS@ \
@@ -1067,12 +1070,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-cscommon.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-dwarf_wrappers.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-dwflpp.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-efnmatch.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-elaborate.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-hash.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-interactive.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-loc2stap.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-mdfour.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-nftw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-nss-server-info.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-nsscommon.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stap-parse.Po@am__quote@ # am--include-marker
@@ -1153,6 +1158,34 @@ stap-mdfour.obj: mdfour.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mdfour.c' object='stap-mdfour.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -c -o stap-mdfour.obj `if test -f 'mdfour.c'; then $(CYGPATH_W) 'mdfour.c'; else $(CYGPATH_W) '$(srcdir)/mdfour.c'; fi`
+
+stap-efnmatch.o: efnmatch.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -MT stap-efnmatch.o -MD -MP -MF $(DEPDIR)/stap-efnmatch.Tpo -c -o stap-efnmatch.o `test -f 'efnmatch.c' || echo '$(srcdir)/'`efnmatch.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/stap-efnmatch.Tpo $(DEPDIR)/stap-efnmatch.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='efnmatch.c' object='stap-efnmatch.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -c -o stap-efnmatch.o `test -f 'efnmatch.c' || echo '$(srcdir)/'`efnmatch.c
+
+stap-efnmatch.obj: efnmatch.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -MT stap-efnmatch.obj -MD -MP -MF $(DEPDIR)/stap-efnmatch.Tpo -c -o stap-efnmatch.obj `if test -f 'efnmatch.c'; then $(CYGPATH_W) 'efnmatch.c'; else $(CYGPATH_W) '$(srcdir)/efnmatch.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/stap-efnmatch.Tpo $(DEPDIR)/stap-efnmatch.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='efnmatch.c' object='stap-efnmatch.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -c -o stap-efnmatch.obj `if test -f 'efnmatch.c'; then $(CYGPATH_W) 'efnmatch.c'; else $(CYGPATH_W) '$(srcdir)/efnmatch.c'; fi`
+
+stap-nftw.o: nftw.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -MT stap-nftw.o -MD -MP -MF $(DEPDIR)/stap-nftw.Tpo -c -o stap-nftw.o `test -f 'nftw.c' || echo '$(srcdir)/'`nftw.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/stap-nftw.Tpo $(DEPDIR)/stap-nftw.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='nftw.c' object='stap-nftw.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -c -o stap-nftw.o `test -f 'nftw.c' || echo '$(srcdir)/'`nftw.c
+
+stap-nftw.obj: nftw.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -MT stap-nftw.obj -MD -MP -MF $(DEPDIR)/stap-nftw.Tpo -c -o stap-nftw.obj `if test -f 'nftw.c'; then $(CYGPATH_W) 'nftw.c'; else $(CYGPATH_W) '$(srcdir)/nftw.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/stap-nftw.Tpo $(DEPDIR)/stap-nftw.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='nftw.c' object='stap-nftw.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(stap_CPPFLAGS) $(CPPFLAGS) $(stap_CFLAGS) $(CFLAGS) -c -o stap-nftw.obj `if test -f 'nftw.c'; then $(CYGPATH_W) 'nftw.c'; else $(CYGPATH_W) '$(srcdir)/nftw.c'; fi`
 
 stapvirt-stapvirt.o: stapvirt.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(stapvirt_CFLAGS) $(CFLAGS) -MT stapvirt-stapvirt.o -MD -MP -MF $(DEPDIR)/stapvirt-stapvirt.Tpo -c -o stapvirt-stapvirt.o `test -f 'stapvirt.c' || echo '$(srcdir)/'`stapvirt.c
@@ -2263,12 +2296,14 @@ distclean: distclean-recursive
 	-rm -f ./$(DEPDIR)/stap-cscommon.Po
 	-rm -f ./$(DEPDIR)/stap-dwarf_wrappers.Po
 	-rm -f ./$(DEPDIR)/stap-dwflpp.Po
+	-rm -f ./$(DEPDIR)/stap-efnmatch.Po
 	-rm -f ./$(DEPDIR)/stap-elaborate.Po
 	-rm -f ./$(DEPDIR)/stap-hash.Po
 	-rm -f ./$(DEPDIR)/stap-interactive.Po
 	-rm -f ./$(DEPDIR)/stap-loc2stap.Po
 	-rm -f ./$(DEPDIR)/stap-main.Po
 	-rm -f ./$(DEPDIR)/stap-mdfour.Po
+	-rm -f ./$(DEPDIR)/stap-nftw.Po
 	-rm -f ./$(DEPDIR)/stap-nss-server-info.Po
 	-rm -f ./$(DEPDIR)/stap-nsscommon.Po
 	-rm -f ./$(DEPDIR)/stap-parse.Po
@@ -2378,12 +2413,14 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f ./$(DEPDIR)/stap-cscommon.Po
 	-rm -f ./$(DEPDIR)/stap-dwarf_wrappers.Po
 	-rm -f ./$(DEPDIR)/stap-dwflpp.Po
+	-rm -f ./$(DEPDIR)/stap-efnmatch.Po
 	-rm -f ./$(DEPDIR)/stap-elaborate.Po
 	-rm -f ./$(DEPDIR)/stap-hash.Po
 	-rm -f ./$(DEPDIR)/stap-interactive.Po
 	-rm -f ./$(DEPDIR)/stap-loc2stap.Po
 	-rm -f ./$(DEPDIR)/stap-main.Po
 	-rm -f ./$(DEPDIR)/stap-mdfour.Po
+	-rm -f ./$(DEPDIR)/stap-nftw.Po
 	-rm -f ./$(DEPDIR)/stap-nss-server-info.Po
 	-rm -f ./$(DEPDIR)/stap-nsscommon.Po
 	-rm -f ./$(DEPDIR)/stap-parse.Po
