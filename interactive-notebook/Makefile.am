@@ -6,10 +6,10 @@ install-exec-local:
 		do $(INSTALL_PROGRAM) -D $$f $(DESTDIR)$(bindir)/$$f; done
 
 install-data-local:
-	(cd "$(srcdir)"; for f in *.{ipynb,md,txt,json,py}; \
-		do $(INSTALL_DATA) -D $$f $(DESTDIR)$(pkgdatadir)/interactive-notebook/$$f; done)
-	(cd "$(srcdir)/isystemtap"; for f in *.{py,json}; \
-		do $(INSTALL_DATA) -D $$f $(DESTDIR)$(pkgdatadir)/interactive-notebook/isystemtap/$$f; done)
+	(cd "$(srcdir)"; for ex in ipynb md txt json py; do for f in *.$$ex; \
+		do $(INSTALL_DATA) -D $$f $(DESTDIR)$(pkgdatadir)/interactive-notebook/$$f; done; done)
+	(cd "$(srcdir)/isystemtap"; for ex in py json; do for f in *.$$ex; \
+		do $(INSTALL_DATA) -D $$f $(DESTDIR)$(pkgdatadir)/interactive-notebook/isystemtap/$$f; done; done)
 	(cd "$(srcdir)/container"; for f in *; \
 		do $(INSTALL_DATA) -D $$f $(DESTDIR)$(pkgdatadir)/interactive-notebook/container/$$f; done)
 	($(INSTALL_DATA) -D -m 755 stap-jupyter-install $(DESTDIR)$(pkgdatadir)/interactive-notebook/container/stap-jupyter-install)
